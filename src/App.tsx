@@ -1,14 +1,29 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import Login from "./containers/Login";
+import Home from "./containers/Home";
+import Transactions from "./containers/Transactions";
+import Profile from "./containers/Profile";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-         <h1>LisBank</h1>
-         <code>Banco oficial de la Lic. en Ingeniería de Software</code>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/login">
+          <Login></Login>
+        </Route>
+        <Route path="/home">
+          <Home></Home>
+        </Route>
+        <Route path="/transactions">
+          <Transactions></Transactions>
+        </Route>
+        <Route path="/profile">
+          <Profile></Profile>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
