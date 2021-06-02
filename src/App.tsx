@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import Layout from "./components/Layout";
 import Login from "./containers/Login";
 import Home from "./containers/Home";
 import Transactions from "./containers/Transactions";
@@ -14,13 +15,19 @@ function App() {
           <Login></Login>
         </Route>
         <Route path="/home">
-          <Home></Home>
+          <Layout>
+            <Home />
+          </Layout>
         </Route>
         <Route path="/transactions">
-          <Transactions></Transactions>
+          <Layout>
+            <Transactions />
+          </Layout>
         </Route>
         <Route path="/profile">
-          <Profile></Profile>
+          <Layout>
+            <Profile />
+          </Layout>
         </Route>
       </Switch>
     </Router>
