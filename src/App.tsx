@@ -14,21 +14,17 @@ function App() {
         <Route path="/login">
           <Login></Login>
         </Route>
-        <Route path="/home">
-          <Layout>
+        <Layout>
+          <Route path="/home">
             <Home />
-          </Layout>
-        </Route>
-        <Route path="/transactions">
-          <Layout>
+          </Route>
+          <Route path="/transactions">
             <Transactions />
-          </Layout>
-        </Route>
-        <Route path="/profile">
-          <Layout>
+          </Route>
+          <Route path="/profile">
             <Profile />
-          </Layout>
-        </Route>
+          </Route>
+        </Layout>
       </Switch>
     </Router>
   );
