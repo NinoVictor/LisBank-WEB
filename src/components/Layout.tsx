@@ -1,4 +1,5 @@
-import React, { FC, ReactNode, useReducer } from "react";
+import React, { FC, ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 import clsx from "clsx";
 import {
@@ -26,10 +27,6 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
-import Header from "./Header";
-import Navigation from "./Navigation";
-import Footer from "./Footer";
 
 const drawerWidth = 240;
 
@@ -161,19 +158,19 @@ const Layout: FC<Props> = ({ children }) => {
         </div>
         <Divider />
         <List>
-          <ListItem button>
+          <ListItem button component={Link} to="/home">
             <ListItemIcon>
               <AccountBalanceWalletIcon />
             </ListItemIcon>
             <ListItemText primary={"Mi cuenta"} />
           </ListItem>
-          <ListItem button>
+          <ListItem button component={Link} to="/transactions">
             <ListItemIcon>
               <TrendingUpIcon />
             </ListItemIcon>
             <ListItemText primary={"Movimientos"} />
           </ListItem>
-          <ListItem button>
+          <ListItem button component={Link} to="/profile">
             <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
@@ -188,7 +185,7 @@ const Layout: FC<Props> = ({ children }) => {
             </ListItemIcon>
             <ListItemText primary={"Configuración"} />
           </ListItem>
-          <ListItem button>
+          <ListItem button component={Link} to="/">
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>
