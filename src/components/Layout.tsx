@@ -28,6 +28,7 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
