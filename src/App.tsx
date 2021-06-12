@@ -6,14 +6,13 @@ import Login from "./containers/Login";
 import Home from "./containers/Home";
 import Transactions from "./containers/Transactions";
 import Profile from "./containers/Profile";
-import Register from './containers/Register';
+
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route exact path="/register" component={Register} />
         <Layout>
           <Route path="/home">
             <Home />

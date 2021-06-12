@@ -123,11 +123,6 @@ const Login: FC<{}> = () => {
                 ¿Olvidaste tu contraseña?
               </Link>
             </Grid>
-            <Grid item>
-              <Link href="/register" variant="body2" className={classes.text}>
-                {"¿No tienes una cuenta? Registrate"}
-              </Link>
-            </Grid>
           </Grid>
         </form>
 
