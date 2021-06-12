@@ -59,18 +59,25 @@ const Login: FC<{}> = () => {
 
   function LoginRequest() {
     var data = { email: `${email}`, password: `${password}` };
-    let url = "https://reqres.in/api/login";
+    //  let url = "https://reqres.in/api/login";
+    const headers ={
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    }
+    let url = "http://localhost:5000/token";
     axios
-      .post(url, data)
+      .post(url, data,{headers:headers})
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem("token", response.data.token);
-          history.push("/home");
+          console.log(response);
+          
+         // localStorage.setItem("token", response.data.token);
+         // history.push("/home");
         }
       })
       .catch((e) => {
         setError(true);
-        setErrorMsg(e.response.data.error);
+        setErrorMsg(e.response);
       });
   }
 
