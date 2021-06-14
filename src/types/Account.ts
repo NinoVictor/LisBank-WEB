@@ -5,6 +5,16 @@ export interface Account {
     number: string;
     availableBalance: number;
     idClient: number;
+    card: Card
+}
+
+export interface Card {
+    id: number,
+    cvv: string,
+    dueDate: string,
+    nip: number,
+    number: string,
+
 }
 
 export interface DebitAccount {

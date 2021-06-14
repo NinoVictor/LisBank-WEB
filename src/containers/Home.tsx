@@ -7,12 +7,9 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import Box from "@material-ui/core/Box";
-import { api, getToken } from "../api";
+import DialogDetailAccount from "../components/DialogDetailAccount";
+
+import { api } from "../api";
 import { Accounts } from "../types/Account";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,8 +44,6 @@ const Home: FC<{}> = (): ReactElement => {
 
   const getAccountsReq = async () => {
     try {
-      const token = getToken();
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const { data } = await api.get<any>("/client/accounts");
       console.log(data.data);
       setAccounts(data.data);
@@ -61,12 +56,6 @@ const Home: FC<{}> = (): ReactElement => {
     getAccountsReq();
   }, []);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const classes = useStyles();
   return (
     <>
@@ -80,13 +69,13 @@ const Home: FC<{}> = (): ReactElement => {
             </Paper>
           </Grid>
           {accounts.debitAccounts.map((debit) => (
-            <Grid item xs={12} sm={8}>
+            <Grid item xs={12} sm={8} key={debit.id}>
               <Card>
                 <CardContent>
                   <Grid container>
                     <Grid item xs={12} md={6}>
                       <Typography variant="h5" component="h2">
-                        {debit.id}
+                        $ {debit.account.availableBalance}
                       </Typography>
                       <Typography color="textSecondary">
                         Saldo disponible
@@ -101,124 +90,40 @@ const Home: FC<{}> = (): ReactElement => {
                   </Grid>
                 </CardContent>
                 <CardActions>
-                  <Button
-                    color="primary"
-                    size="small"
-                    onClick={handleClickOpen}
-                  >
-                    Ver detalle
-                  </Button>
+                  <DialogDetailAccount account={debit.account} />
                 </CardActions>
               </Card>
             </Grid>
           ))}
-
-          {/* <Grid item xs={12} sm={8}>
-            <Card>
-              <CardContent>
-                <Grid container>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="h5" component="h2">
-                      $1,234,095.00
-                    </Typography>
-                    <Typography color="textSecondary">
-                      Saldo disponible
-                    </Typography>
+          {accounts.creditAccounts.map((credit) => (
+            <Grid item xs={12} sm={8} key={credit.id}>
+              <Card>
+                <CardContent>
+                  <Grid container>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="h5" component="h2">
+                        $ {credit.account.availableBalance}
+                      </Typography>
+                      <Typography color="textSecondary">
+                        Saldo disponible
+                      </Typography>
+                    </Grid>
+                    <Grid className={classes.cardright} item xs={12} md={6}>
+                      <Typography variant="subtitle1">Crédito</Typography>
+                      <Typography variant="subtitle2" color="textSecondary">
+                        Tipo de cuenta
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid className={classes.cardright} item xs={12} md={6}>
-                    <Typography variant="subtitle1">Débito</Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      Tipo de cuenta
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardContent>
-              <CardActions>
-                <Button color="primary" size="small" onClick={handleClickOpen}>
-                  Ver detalle
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid> */}
-        </Grid>
-        <DialogAccount open={open} onClose={handleClose}></DialogAccount>
-      </div>
-    </>
-  );
-};
-interface Props {
-  open: boolean;
-  onClose: () => void;
-}
-const DialogAccount: FC<Props> = ({ open, onClose }): ReactElement => {
-  const classes = useStyles();
-  return (
-    <>
-      <Dialog
-        onClose={onClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle>Detalle de la cuenta</DialogTitle>
-        <DialogContent>
-          <Card className={classes.cardAccount}>
-            <CardContent>
-              <Typography variant="subtitle2" color="textPrimary">
-                Número de tarjeta
-              </Typography>
-              <Typography variant="h6" color="textPrimary">
-                1234 1234 1234 1234
-              </Typography>
-              <Typography variant="subtitle1" color="textPrimary">
-                Vecha de vencimiento: <span>12/06</span>
-              </Typography>
-              <Typography variant="subtitle1" color="textPrimary">
-                CVV: <span>120</span>
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="textPrimary"
-                component="span"
-              >
-                Nombre del propietario:
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="textPrimary"
-                component="span"
-              >
-                Victor Niño
-              </Typography>
-            </CardContent>
-          </Card>
-          <Box mt={2}>
-            <Grid container>
-              <Grid item xs={6}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                >
-                  Estado de cuenta
-                </Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                >
-                  Resumen adeudo
-                </Button>
-              </Grid>
+                </CardContent>
+                <CardActions>
+                  <DialogDetailAccount account={credit.account} />
+                </CardActions>
+              </Card>
             </Grid>
-          </Box>
-        </DialogContent>
-      </Dialog>
+          ))}
+        </Grid>
+      </div>
     </>
   );
 };
