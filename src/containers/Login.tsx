@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Container } from "@material-ui/core";
 import { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,9 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router";
+import { api } from "../api";
+import { LoginResponse } from "../types/Auth";
+import { AuthContext } from "../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,9 +55,12 @@ const Login: FC<{}> = () => {
   const [errorMsg, setErrorMsg] = useState("");
   let history = useHistory();
 
+  const context = useContext(AuthContext);
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    LoginRequest();
+    //LoginRequest();
+    loginReq();
   };
 
   function LoginRequest() {
@@ -70,9 +76,25 @@ const Login: FC<{}> = () => {
       })
       .catch((e) => {
         setError(true);
-        setErrorMsg(e.response.data.error);
+        setErrorMsg(e.response.data.title);
       });
   }
+
+  const loginReq = async () => {
+    try {
+      var data = { user: `${email}`, password: `${password}` };
+      const resp = await api.post<LoginResponse>("/token", data);
+      console.log(resp);
+      localStorage.setItem("token", resp.data.accessToken);
+      localStorage.setItem("refreshToken", resp.data.refreshToken);
+      context.login(resp.data.data);
+      history.push("/home");
+    } catch (e) {
+      setError(true);
+      console.log(e);
+      //setErrorMsg(e);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">

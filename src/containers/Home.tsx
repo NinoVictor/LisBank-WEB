@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useEffect } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -12,6 +12,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import Box from "@material-ui/core/Box";
+import { api, getToken } from "../api";
+import { Accounts } from "../types/Account";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,7 +37,30 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 const Home: FC<{}> = (): ReactElement => {
+  const initialState: Accounts = {
+    debitAccounts: [],
+    creditAccounts: [],
+  };
+
   const [open, setOpen] = React.useState(false);
+  const [accounts, setAccounts] = React.useState<Accounts>(initialState);
+
+  const getAccountsReq = async () => {
+    try {
+      const token = getToken();
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const { data } = await api.get<any>("/client/accounts");
+      console.log(data.data);
+      setAccounts(data.data);
+    } catch (e) {
+      setAccounts(initialState);
+    }
+  };
+
+  useEffect(() => {
+    getAccountsReq();
+  }, []);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -54,7 +79,41 @@ const Home: FC<{}> = (): ReactElement => {
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          {accounts.debitAccounts.map((debit) => (
+            <Grid item xs={12} sm={8}>
+              <Card>
+                <CardContent>
+                  <Grid container>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="h5" component="h2">
+                        {debit.id}
+                      </Typography>
+                      <Typography color="textSecondary">
+                        Saldo disponible
+                      </Typography>
+                    </Grid>
+                    <Grid className={classes.cardright} item xs={12} md={6}>
+                      <Typography variant="subtitle1">Débito</Typography>
+                      <Typography variant="subtitle2" color="textSecondary">
+                        Tipo de cuenta
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    color="primary"
+                    size="small"
+                    onClick={handleClickOpen}
+                  >
+                    Ver detalle
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+
+          {/* <Grid item xs={12} sm={8}>
             <Card>
               <CardContent>
                 <Grid container>
@@ -80,34 +139,7 @@ const Home: FC<{}> = (): ReactElement => {
                 </Button>
               </CardActions>
             </Card>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Card>
-              <CardContent>
-                <Grid container>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="h5" component="h2">
-                      $1,234,095.00
-                    </Typography>
-                    <Typography color="textSecondary">
-                      Saldo disponible
-                    </Typography>
-                  </Grid>
-                  <Grid className={classes.cardright} item xs={12} md={6}>
-                    <Typography variant="subtitle1">Débito</Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                      Tipo de cuenta
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardContent>
-              <CardActions>
-                <Button color="primary" size="small" onClick={handleClickOpen}>
-                  Ver detalle
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          </Grid> */}
         </Grid>
         <DialogAccount open={open} onClose={handleClose}></DialogAccount>
       </div>
