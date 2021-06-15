@@ -1,5 +1,11 @@
-import { User } from "../types/Auth";
+import { LoginResponse, User } from "../types/Auth";
 import { createContext, useReducer } from "react";
+import {
+  setToken,
+  setRefreshToken,
+  deleteToken,
+  deleteRefreshToken,
+} from "../utils/jwt";
 
 export interface AuthState {
   isLoggedIn: Boolean;
@@ -12,7 +18,7 @@ const initialState: AuthState = {
 
 export interface AuthContextProps {
   authState: AuthState;
-  login: (login: User) => void;
+  login: (login: LoginResponse) => void;
   logout: () => void;
 }
 
@@ -21,12 +27,16 @@ export const AuthContext = createContext({} as AuthContextProps);
 export const AuthProvider = ({ children }: any) => {
   const [authState, dispatch] = useReducer(authReducer, initialState);
 
-  const login = (user: User) => {
-    dispatch({ type: "login", payload: user });
+  const login = (user: LoginResponse) => {
+    dispatch({ type: "login", payload: user.data });
+    setToken(user.accessToken);
+    setRefreshToken(user.refreshToken);
   };
 
   const logout = () => {
     dispatch({ type: "logout" });
+    deleteToken();
+    deleteRefreshToken();
   };
 
   return (
