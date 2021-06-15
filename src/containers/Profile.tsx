@@ -5,7 +5,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { AuthContext } from "../context/AuthContext";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { User } from "../types/Auth";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,8 +37,6 @@ const Profile: FC<{}> = () => {
   const { authState } = useContext(AuthContext);
   const { user } = authState;
   
-  localStorage.setItem("user", JSON.stringify(user));
-  //var userFromStorage = JSON.parse(localStorage.getItem('user') || '{}');
   
   return (
     <>
@@ -75,6 +72,7 @@ const Profile: FC<{}> = () => {
                   </Typography>
                 </Paper>
               </Grid>
+           
               <Grid item xs={12} sm={3}>
                 <Paper className={classes.paper}>
                   <Typography className={classes.paperInfo} variant="h6" >
