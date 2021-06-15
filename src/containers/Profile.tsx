@@ -37,9 +37,10 @@ const Profile: FC<{}> = () => {
   const classes = useStyles();
   const { authState } = useContext(AuthContext);
   const { user } = authState;
-
-  const [userProfile, setUserProfile] = useState<User>();
-
+  
+  localStorage.setItem("user", JSON.stringify(user));
+  //var userFromStorage = JSON.parse(localStorage.getItem('user') || '{}');
+  
   return (
     <>
       <div className={classes.root}>
@@ -70,7 +71,7 @@ const Profile: FC<{}> = () => {
                     Teléfono
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    Teléfono de la persona
+                  {user?.phoneNumber}
                   </Typography>
                 </Paper>
               </Grid>
@@ -80,7 +81,7 @@ const Profile: FC<{}> = () => {
                     Nombre
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    Nombre de la persona
+                    {user?.name}
                   </Typography>
                 </Paper>
               </Grid>
@@ -93,7 +94,7 @@ const Profile: FC<{}> = () => {
                     Correo electrónico
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    correo de la persona
+                    {user?.email}
                   </Typography>
                 </Paper>
               </Grid>
@@ -103,7 +104,7 @@ const Profile: FC<{}> = () => {
                     Dirección
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    Dirección de la persona
+                    {user?.address}
                   </Typography>
                 </Paper>
               </Grid>
