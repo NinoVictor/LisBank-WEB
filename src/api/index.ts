@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from '../utils/jwt';
 
 export const api = createInstance();
 
@@ -7,6 +8,7 @@ function createInstance() {
         baseURL: 'http://ec2-18-117-144-170.us-east-2.compute.amazonaws.com:5000'
     });
     const token = getToken();
+
     if (token) {
         instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
@@ -21,8 +23,4 @@ export function setAxiosInterceptors() {
         }
         return config;
     });
-}
-
-export function getToken() {
-    return localStorage.getItem("token");
 }

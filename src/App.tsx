@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import Layout from "./components/Layout";
 import Login from "./containers/Login";
@@ -7,30 +12,54 @@ import Home from "./containers/Home";
 import Transactions from "./containers/Transactions";
 import Profile from "./containers/Profile";
 import Register from "./containers/Register";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, AuthContext } from "./context/AuthContext";
 
 function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Layout>
-            <Route path="/home">
-              <Home />
-            </Route>
-            <Route path="/transactions">
-              <Transactions />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-          </Layout>
-        </Switch>
-      </Router>
-    </AuthProvider>
-  );
+  const { authState } = React.useContext(AuthContext);
+
+  console.log(authState);
+
+  return <>{authState.isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}</>;
 }
 
-export default App;
+const PublicRoutes = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+const PrivateRoutes = () => {
+  return (
+    <Router>
+      <Switch>
+        <Layout>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/transactions">
+            <Transactions />
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <Route path="*">
+            <Redirect to="/home" />
+          </Route>
+        </Layout>
+      </Switch>
+    </Router>
+  );
+};
+
+export default () => (
+  <AuthProvider>
+    <App></App>
+  </AuthProvider>
+);

@@ -63,36 +63,17 @@ const Login: FC<{}> = () => {
     loginReq();
   };
 
-  function LoginRequest() {
-    var data = { email: `${email}`, password: `${password}` };
-    let url = "https://reqres.in/api/login";
-    axios
-      .post(url, data)
-      .then((response) => {
-        if (response.status === 200) {
-          localStorage.setItem("token", response.data.token);
-          history.push("/home");
-        }
-      })
-      .catch((e) => {
-        setError(true);
-        setErrorMsg(e.response.data.title);
-      });
-  }
-
   const loginReq = async () => {
     try {
       var data = { user: `${email}`, password: `${password}` };
       const resp = await api.post<LoginResponse>("/token", data);
-      console.log(resp);
-      localStorage.setItem("token", resp.data.accessToken);
-      localStorage.setItem("refreshToken", resp.data.refreshToken);
-      context.login(resp.data.data);
+      context.login(resp.data);
       history.push("/home");
     } catch (e) {
       setError(true);
-      console.log(e);
-      //setErrorMsg(e);
+      if (e.request.status === 404) {
+        setErrorMsg("Usuario o contraseña incorrecta");
+      }
     }
   };
 

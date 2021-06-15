@@ -2,8 +2,6 @@ import React, { FC, useEffect } from "react";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import Box from "@material-ui/core/Box";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -71,7 +69,6 @@ const DialogDetailAccount: FC<Props> = ({ account }) => {
       const { data } = await api.get<any>(
         `/transactions/client/account/${account.id}/transactions`
       );
-      console.log(data);
       setTransactions(data);
     } catch (e) {
       setTransactions(initialState);
@@ -163,7 +160,7 @@ const DialogDetailAccount: FC<Props> = ({ account }) => {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               {transactions.data?.map((tran) => (
-                <div>
+                <div key={tran.id}>
                   <Grid container spacing={2}>
                     <Grid item xs>
                       <Typography variant="subtitle2" color="textPrimary">

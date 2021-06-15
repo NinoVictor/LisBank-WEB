@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import clsx from "clsx";
@@ -27,6 +27,8 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { AuthContext } from "../context/AuthContext";
+import { useHistory } from "react-router";
 
 const drawerWidth = 240;
 
@@ -105,6 +107,9 @@ const Layout: FC<Props> = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const { authState, logout } = useContext(AuthContext);
+
+  let history = useHistory();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -112,6 +117,11 @@ const Layout: FC<Props> = ({ children }) => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    history.push("/");
   };
 
   return (
@@ -185,7 +195,7 @@ const Layout: FC<Props> = ({ children }) => {
             </ListItemIcon>
             <ListItemText primary={"Configuración"} />
           </ListItem>
-          <ListItem button component={Link} to="/">
+          <ListItem button onClick={handleLogout}>
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>

@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(1),
       textAlign: "center",
+      background: "transparent",
     },
     cardright: {
       textAlign: "right",
