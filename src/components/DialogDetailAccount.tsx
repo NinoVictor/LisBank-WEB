@@ -6,6 +6,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
+import Paper from "@material-ui/core/Paper";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -17,6 +18,7 @@ import clsx from "clsx";
 import { Account } from "../types/Account";
 import { Transactions } from "../types/Transactions";
 import { api } from "../api";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,8 +26,9 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     paper: {
-      padding: theme.spacing(1),
-      textAlign: "center",
+      padding: "15px",
+      margin: "10px 0px 10px 0px",
+      backgroundColor: "hsl(210,50%,80%)",
     },
     cardright: {
       textAlign: "right",
@@ -94,69 +97,101 @@ const DialogDetailAccount: FC<Props> = ({ account }) => {
       <Button color="primary" size="small" onClick={handleClickOpen}>
         Ver detalle
       </Button>
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-        fullWidth
-        maxWidth="sm"
-      >
+      <Dialog onClose={handleClose} open={open} maxWidth="sm">
         <DialogTitle>Detalle de la cuenta</DialogTitle>
         <DialogContent>
-          <Card elevation={0}>
-            <CardContent>
-              <Typography variant="subtitle1" color="textPrimary">
-                CLABE: <span> {account.clabe} </span>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2" color="textSecondary">
+                CLABE
+                <Typography variant="subtitle1" color="textPrimary">
+                  {account.clabe}
+                </Typography>
               </Typography>
-              <Typography variant="subtitle1" color="textPrimary">
-                Número de cuenta: <span> {account.number} </span>
+              <Typography variant="subtitle2" color="textSecondary">
+                Número de cuenta
+                <Typography variant="subtitle1" color="textPrimary">
+                  {account.number}
+                </Typography>
               </Typography>
-            </CardContent>
-            <CardContent className={classes.cardAccount}>
-              <Typography variant="subtitle2" color="textPrimary">
-                Número de tarjeta
-              </Typography>
-              <Typography variant="h6" color="textPrimary">
-                {account.card.number}
-              </Typography>
-              <Typography variant="subtitle1" color="textPrimary">
-                Vecha de vencimiento: <span> {account.card.dueDate} </span>
-              </Typography>
-              <Typography variant="subtitle1" color="textPrimary">
-                CVV: <span> {account.card.cvv} </span>
-              </Typography>
-            </CardContent>
-          </Card>
-          <CardActions>
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              disableElevation
-            >
-              Estado de cuenta
-            </Button>
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              disableElevation
-            >
-              Resumen adeudo
-            </Button>
-            <Typography>Últimos movimientos </Typography>
-            <IconButton
-              className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </CardActions>
-          <CardActions></CardActions>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper elevation={0} className={classes.paper}>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      Número de tarjeta
+                    </Typography>
+                    <Typography variant="h6" color="textPrimary">
+                      {account.card.number}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      Fecha:
+                      <Typography
+                        variant="subtitle1"
+                        component="span"
+                        color="textPrimary"
+                      >
+                        {account.card.dueDate}
+                      </Typography>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      CVV:
+                      <Typography
+                        variant="subtitle1"
+                        component="span"
+                        color="textPrimary"
+                      >
+                        {account.card.cvv}
+                      </Typography>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Button
+                size="small"
+                variant="contained"
+                color="primary"
+                disableElevation
+              >
+                Estado de cuenta
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                size="small"
+                variant="contained"
+                color="primary"
+                disableElevation
+              >
+                Resumen adeudo
+              </Button>
+            </Grid>
+            <Grid item xs>
+              <Box display="flex">
+                <Typography variant="h6" color="textPrimary">
+                  Últimos movimientos
+                </Typography>
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </Box>
+            </Grid>
+          </Grid>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               {transactions.data?.map((tran) => (

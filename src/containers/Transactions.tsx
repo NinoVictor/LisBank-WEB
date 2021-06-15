@@ -124,7 +124,7 @@ const Transactions: FC<{}> = () => {
                           <Typography variant="h6" color="textPrimary">
                             $ {tran.amount}
                           </Typography>
-                          <Typography variant="subtitle2" color="textPrimary">
+                          <Typography variant="subtitle2" color="textSecondary">
                             Cuenta
                           </Typography>
                           <Typography variant="subtitle1" color="textPrimary">

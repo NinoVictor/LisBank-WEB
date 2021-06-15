@@ -16,9 +16,6 @@ import { AuthProvider, AuthContext } from "./context/AuthContext";
 
 function App() {
   const { authState } = React.useContext(AuthContext);
-
-  console.log(authState);
-
   return <>{authState.isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}</>;
 }
 
@@ -58,8 +55,12 @@ const PrivateRoutes = () => {
   );
 };
 
-export default () => (
-  <AuthProvider>
-    <App></App>
-  </AuthProvider>
-);
+const render = () => {
+  return (
+    <AuthProvider>
+      <App></App>
+    </AuthProvider>
+  );
+};
+
+export default render;

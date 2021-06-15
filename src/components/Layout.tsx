@@ -189,12 +189,6 @@ const Layout: FC<Props> = ({ children }) => {
         </List>
         <Divider />
         <List>
-          <ListItem button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Configuración"} />
-          </ListItem>
           <ListItem button onClick={handleLogout}>
             <ListItemIcon>
               <ExitToAppIcon />
