@@ -1,3 +1,5 @@
+import { Transaction } from "./Transactions";
+
 export interface Account {
     id: number;
     clabe: string;
@@ -5,7 +7,8 @@ export interface Account {
     number: string;
     availableBalance: number;
     idClient: number;
-    card: Card
+    card: Card,
+    transactions?: Transaction[]
 }
 
 export interface Card {
