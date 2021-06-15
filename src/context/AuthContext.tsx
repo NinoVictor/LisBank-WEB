@@ -1,10 +1,13 @@
 import { LoginResponse, User } from "../types/Auth";
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import {
   setToken,
   setRefreshToken,
   deleteToken,
   deleteRefreshToken,
+  setState,
+  getState,
+  deleteState,
 } from "../utils/jwt";
 
 export interface AuthState {
@@ -29,6 +32,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const login = (user: LoginResponse) => {
     dispatch({ type: "login", payload: user.data });
+    setState(user.data);
     setToken(user.accessToken);
     setRefreshToken(user.refreshToken);
   };
@@ -37,7 +41,18 @@ export const AuthProvider = ({ children }: any) => {
     dispatch({ type: "logout" });
     deleteToken();
     deleteRefreshToken();
+    deleteState();
   };
+
+  const loadUser = () => {
+    if (!getState()) {
+      return;
+    }
+    dispatch({ type: "login", payload: getState() });
+  };
+  useEffect(() => {
+    loadUser();
+  }, []);
 
   return (
     <AuthContext.Provider

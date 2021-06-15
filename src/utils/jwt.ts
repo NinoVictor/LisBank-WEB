@@ -1,4 +1,6 @@
-import { TOKEN_KEY, REFRESH_TOKEN_KEY } from "./constants";
+import { AuthState } from "../context/AuthContext";
+import { User } from "../types/Auth";
+import { TOKEN_KEY, REFRESH_TOKEN_KEY, USER_STATE } from "./constants";
 
 export function setToken(token: string) {
     localStorage.setItem(TOKEN_KEY, token);
@@ -22,4 +24,16 @@ export function deleteToken() {
 
 export function deleteRefreshToken() {
     localStorage.removeItem(REFRESH_TOKEN_KEY);
+}
+
+export function setState(state: User) {
+    localStorage.setItem(USER_STATE, JSON.stringify(state));
+}
+export function getState() {
+    var user = localStorage.getItem(USER_STATE);
+    return JSON.parse(user!)
+}
+
+export function deleteState() {
+    localStorage.removeItem(USER_STATE);
 }

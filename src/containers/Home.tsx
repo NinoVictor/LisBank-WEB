@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(1),
       textAlign: "center",
+      background: "transparent",
     },
     cardright: {
       textAlign: "right",
@@ -45,6 +46,7 @@ const Home: FC<{}> = (): ReactElement => {
   const getAccountsReq = async () => {
     try {
       const { data } = await api.get<any>("/client/accounts");
+      console.log(data.data);
       setAccounts(data.data);
     } catch (e) {
       setAccounts(initialState);
