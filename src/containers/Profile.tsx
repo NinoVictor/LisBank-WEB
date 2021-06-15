@@ -5,7 +5,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { AuthContext } from "../context/AuthContext";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { User } from "../types/Auth";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,9 +36,8 @@ const Profile: FC<{}> = () => {
   const classes = useStyles();
   const { authState } = useContext(AuthContext);
   const { user } = authState;
-
-  const [userProfile, setUserProfile] = useState<User>();
-
+  
+  
   return (
     <>
       <div className={classes.root}>
@@ -70,17 +68,18 @@ const Profile: FC<{}> = () => {
                     Teléfono
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    Teléfono de la persona
+                  {user?.phoneNumber}
                   </Typography>
                 </Paper>
               </Grid>
+           
               <Grid item xs={12} sm={3}>
                 <Paper className={classes.paper}>
                   <Typography className={classes.paperInfo} variant="h6" >
                     Nombre
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    Nombre de la persona
+                    {user?.name}
                   </Typography>
                 </Paper>
               </Grid>
@@ -93,7 +92,7 @@ const Profile: FC<{}> = () => {
                     Correo electrónico
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    correo de la persona
+                    {user?.email}
                   </Typography>
                 </Paper>
               </Grid>
@@ -103,7 +102,7 @@ const Profile: FC<{}> = () => {
                     Dirección
                   </Typography>
                   <Typography className={classes.paperInfo} variant="body1">
-                    Dirección de la persona
+                    {user?.address}
                   </Typography>
                 </Paper>
               </Grid>
